@@ -4,16 +4,20 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>WebRTCast Host</title>
+        <title>WebRTCast Viewer</title>
         <script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js"></script>
         <script defer src="./viewer.js"></script>
         <link href="./style.css" rel="stylesheet" />
     </head>
     <body>
-        <div id="connectControls" class="center">
-            <label>Peer Id: <input id="peerInput" autofocus /></label>
+        <video id="stream" autoplay></video>
+        <div id="overlay" class="white">
+            <div>
+                <label for="peerInput">Peer ID:</label>
+                <input id="peerInput" name="peerInput" autofocus />
+            </div>
+            <br />
             <button id="connectBtn">Connect</button>
         </div>
-        <video id="stream" style="display: none" autoplay></video>
     </body>
 </html>

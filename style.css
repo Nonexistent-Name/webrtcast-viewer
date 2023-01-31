@@ -1,24 +1,50 @@
 body {
+    display: flex;
     font-family: sans-serif;
     margin: 0;
     overflow: overlay;
-}
-
-.center {
-    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
     align-items: center;
     justify-content: center;
 }
 
-.absolute {
-    position: absolute;
-}
-
-.darken {
-    filter: brightness(0.5);
-    filter: blur(2px);
-}
-
 #stream {
     width: 100%;
+}
+
+#overlay {
+    position: absolute;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    color: white;
+    background-color: rgb(39, 39, 39);
+}
+
+#peerInput {
+    width: 20rem;
+    font-family: monospace;
+    border-radius: 0.5rem;
+    border: 0.1rem solid white;
+    color: inherit;
+    background-color: transparent;
+}
+
+#connectBtn {
+    display: block;
+    width: 100%;
+    font-size: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 0.25rem solid white;
+    color: inherit;
+    background-color: transparent;
+    transition: color 0.25s, background-color 0.25s;
+    cursor: pointer;
+}
+
+#connectBtn:hover {
+    color: black;
+    background-color: white;
 }
