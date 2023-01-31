@@ -24,10 +24,8 @@ peer.on('call', call => {
 
 const connectBtn = document.getElementById('connectBtn');
 
-let connection;
-
 connectBtn.addEventListener('click', () => {
-    connection = peer.connect(peerInput.value);
+    const conn = peer.connect(peerInput.value);
 
     connectBtn.innerText = 'Connecting...';
     connectBtn.style.backgroundColor = 'white';
@@ -36,6 +34,17 @@ connectBtn.addEventListener('click', () => {
     console.log(`1/4 Connecting to ${peerInput.value}`);
 
     conn.on('open', () => {
+        const keyEvent = event => {
+            conn.send({
+                type: 'key',
+                key: event.key.toLowerCase(),
+                state: event.type,
+            });
+        };
+
+        addEventListener('keydown', keyEvent);
+        addEventListener('keyup', keyEvent);
+
         console.log('2/4 Connection established');
     });
 
@@ -44,8 +53,6 @@ connectBtn.addEventListener('click', () => {
     });
 
     conn.on('error', err => {
-        connections = connections.filter(c => c !== conn);
-
         console.error(err);
     });
 });
@@ -69,9 +76,6 @@ const keyEvent = event => {
         });
     });
 };
-
-addEventListener('keydown', keyEvent);
-addEventListener('keyup', keyEvent);
 
 document.body.addEventListener('click', () => {
     if (document.fullscreenElement || !streamDisplay.srcObject) return;
