@@ -36,9 +36,8 @@ connectBtn.addEventListener('click', () => {
     conn.on('open', () => {
         const keyEvent = event => {
             conn.send({
-                type: 'key',
+                type: event.type,
                 key: event.key.toLowerCase(),
-                state: event.type,
             });
         };
 
