@@ -23,6 +23,7 @@ peer.on('call', call => {
 });
 
 const connectBtn = document.getElementById('connectBtn');
+const mouseBtns = ['left', 'middle', 'right'];
 
 connectBtn.addEventListener('click', () => {
     const conn = peer.connect(peerInput.value);
@@ -34,15 +35,51 @@ connectBtn.addEventListener('click', () => {
     console.log(`1/4 Connecting to ${peerInput.value}`);
 
     conn.on('open', () => {
-        const keyEvent = event => {
-            conn.send({
-                type: event.type,
-                key: event.key.toLowerCase(),
-            });
+        const pressed = {
+            left: false,
+            middle: false,
+            right: false,
         };
 
-        addEventListener('keydown', keyEvent);
-        addEventListener('keyup', keyEvent);
+        addEventListener('keydown', event => {
+            if (pressed[event.key] === undefined) pressed[event.key] = false;
+
+            if (pressed[event.key]) return;
+
+            pressed[event.key] = true;
+            conn.send({ type: 'keydown', key: event.key.toLowerCase() });
+        });
+
+        addEventListener('keyup', event => {
+            if (pressed[event.key] === undefined) pressed[event.key] = false;
+
+            if (!pressed[event.key]) return;
+
+            pressed[event.key] = false;
+            conn.send({ type: 'keyup', key: event.key.toLowerCase() });
+        });
+
+        addEventListener('mousedown', event => {
+            const btn = mouseBtns[event.button];
+            if (pressed[btn]) return;
+            pressed[btn] = true;
+            conn.send({ type: 'mousedown', button: btn });
+        });
+
+        addEventListener('mouseup', event => {
+            const btn = mouseBtns[event.button];
+            if (!pressed[btn]) return;
+            pressed[btn] = false;
+            conn.send({ type: 'mouseup', button: btn });
+        });
+
+        addEventListener('mousemove', event => {
+            conn.send({
+                type: 'mousepos',
+                x: event.pageX / document.body.clientWidth,
+                y: event.pageY / document.body.clientHeight,
+            });
+        });
 
         console.log('2/4 Connection established');
     });
@@ -66,17 +103,7 @@ peerInput.addEventListener('keyup', event => {
     if (event.key === 'Enter') connectBtn.click();
 });
 
-const keyEvent = event => {
-    connections.forEach(conn => {
-        conn.send({
-            type: 'key',
-            key: event.key.toLowerCase(),
-            state: event.type,
-        });
-    });
-};
-
-document.body.addEventListener('click', () => {
+addEventListener('click', () => {
     if (document.fullscreenElement || !streamDisplay.srcObject) return;
 
     try {
