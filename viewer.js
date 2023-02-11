@@ -81,6 +81,8 @@ connectBtn.addEventListener('click', () => {
             });
         });
 
+        addEventListener('contextmenu', event => event.preventDefault());
+
         console.log('2/4 Connection established');
     });
 
