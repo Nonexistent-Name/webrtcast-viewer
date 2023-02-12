@@ -42,26 +42,32 @@ connectBtn.addEventListener('click', () => {
         };
 
         addEventListener('keydown', event => {
-            if (pressed[event.key] === undefined) pressed[event.key] = false;
+            const key = event.key.toLowerCase().replaceAll('arrow', '');
 
-            if (pressed[event.key]) return;
+            if (pressed[key] === undefined) pressed[key] = false;
 
-            pressed[event.key] = true;
-            conn.send({ type: 'keydown', key: event.key.toLowerCase() });
+            if (pressed[key]) return;
+
+            pressed[key] = true;
+            conn.send({ type: 'keydown', key: key });
         });
 
         addEventListener('keyup', event => {
-            if (pressed[event.key] === undefined) pressed[event.key] = false;
+            const key = event.key.toLowerCase().replaceAll('arrow', '');
 
-            if (!pressed[event.key]) return;
+            if (pressed[key] === undefined) pressed[key] = false;
 
-            pressed[event.key] = false;
-            conn.send({ type: 'keyup', key: event.key.toLowerCase() });
+            if (!pressed[key]) return;
+
+            pressed[key] = false;
+            conn.send({ type: 'keyup', key: key });
         });
 
         addEventListener('mousedown', event => {
             const btn = mouseBtns[event.button];
+
             if (pressed[btn]) return;
+            
             pressed[btn] = true;
             conn.send({ type: 'mousedown', button: btn });
         });
