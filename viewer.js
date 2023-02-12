@@ -104,13 +104,3 @@ peerInput.addEventListener('blur', () => {
 peerInput.addEventListener('keyup', event => {
     if (event.key === 'Enter') connectBtn.click();
 });
-
-addEventListener('click', () => {
-    if (document.fullscreenElement || !streamDisplay.srcObject) return;
-
-    try {
-        document.body.requestFullscreen();
-    } catch (err) {
-        console.error(`Fullscreen request failed: ${err}`);
-    }
-});
